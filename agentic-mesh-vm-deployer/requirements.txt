@@ -1,0 +1,4 @@
+multipass
+python-dotenv
+fastapi
+uvicorn

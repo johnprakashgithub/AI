@@ -1,0 +1,10 @@
+{
+  "intent": "deploy_cluster",
+  "vm_count": 2,
+  "vm_name_prefix": "gpu-node",
+  "config_type": "minimal",
+  "requirements": {
+    "gpu": true,
+    "region": "local"
+  }
+}
