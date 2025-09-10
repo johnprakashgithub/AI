@@ -1,0 +1,12 @@
+CREATE TABLE trades (
+    id INTEGER PRIMARY KEY,
+    ticker TEXT,
+    amount REAL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE performance (
+    id INTEGER PRIMARY KEY,
+    gain REAL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
