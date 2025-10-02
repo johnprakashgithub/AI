@@ -1,5 +1,27 @@
 from requests_oauthlib import OAuth2Session
 from config import settings
+from urllib.parse import urlencode
+import requests
+
+def exchange_code_for_token(code: str):
+    data = {
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": settings.redirect_uri,
+        "client_id": settings.client_id,
+        "client_secret": settings.client_secret
+    }
+    response = requests.post(settings.token_url, data=data)
+    return response.json()
+
+def get_auth_url():
+    params = {
+        "response_type": "code",
+        "client_id": settings.client_id,
+        "redirect_uri": settings.redirect_uri,
+        "scope": "read_account write_trade"
+    }
+    return f"{settings.auth_base_url}?{urlencode(params)}"
 
 def get_token():
     oauth = OAuth2Session(settings.client_id, redirect_uri=settings.redirect_uri)
