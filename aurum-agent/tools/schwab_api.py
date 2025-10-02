@@ -20,3 +20,11 @@ def execute_trade(ticker, quantity, order_type="Market"):
     }
     res = requests.post(url, headers=headers, json=payload)
     return res.json()
+
+def get_account_details(access_token: str):
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+    url = f"{settings.api_base}/accounts/{settings.account_id}"
+    response = requests.get(url, headers=headers)
+    return response.json()
