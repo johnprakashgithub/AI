@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  core:
+    build:
+      context: ./core
+      dockerfile: Dockerfile
+    volumes:
+      - ./core/src:/app/src
+    ports:
+      - "5000:5000"
+
+  insights:
+    build:
+      context: ./insights
+      dockerfile: Dockerfile
+    volumes:
+      - ./insights/src:/app/src
+    ports:
+      - "5001:5000"
+
+  salt-manager:
+    build:
+      context: ./salt-manager
+      dockerfile: Dockerfile
+    volumes:
+      - ./salt-manager/src:/app/src
+    ports:
+      - "5002:5000"
+
+  test-runner:
+    build:
+      context: ./test-runner
+      dockerfile: Dockerfile
+    volumes:
+      - ./test-runner/src:/app/src
+    ports:
+      - "5003:5000"
+
+  edge-cdn:
+    build:
+      context: ./edge-cdn
+      dockerfile: Dockerfile
+    volumes:
+      - ./edge-cdn/src:/app/src
+    ports:
+      - "5004:5000"
+
+networks:
+  default:
+    driver: bridge

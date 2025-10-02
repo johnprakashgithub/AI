@@ -1,0 +1,54 @@
+version: '3.8'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      core:
+        build:
+          context: ./core
+          dockerfile: Dockerfile
+        ports:
+          - 8000:8000
+      insights:
+        build:
+          context: ./insights
+          dockerfile: Dockerfile
+        ports:
+          - 8001:8000
+      salt-manager:
+        build:
+          context: ./salt-manager
+          dockerfile: Dockerfile
+        ports:
+          - 8002:8000
+      test-runner:
+        build:
+          context: ./test-runner
+          dockerfile: Dockerfile
+        ports:
+          - 8003:8000
+      edge-cdn:
+        build:
+          context: ./edge-cdn
+          dockerfile: Dockerfile
+        ports:
+          - 8004:8000
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and push Docker images
+        run: |
+          docker-compose build
+          docker-compose push
+
+      - name: Run tests
+        run: |
+          docker-compose run test-runner
+
+      - name: Deploy
+        run: |
+          echo "Deploying services..."
+          # Add deployment commands here
