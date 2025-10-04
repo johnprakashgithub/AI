@@ -1,0 +1,8 @@
+langgraph
+openai
+python-dotenv
+requests
+fastapi
+uvicorn
+email-validator  # for validating email addresses
+pydantic          # for structured config or FastAPI models

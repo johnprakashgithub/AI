@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+.env
+memory_logs.json
+
+# LangGraph / LangServe
+.cache/
+logs/
+
+# VSCode
+.vscode/
+
+# Steps
+examples/
+
+# OS
+.DS_Store
+Thumbs.db

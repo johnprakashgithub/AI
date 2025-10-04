@@ -1,0 +1,113 @@
+{
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Weekly Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [200, 300],
+      "parameters": {
+        "triggerTimes": [
+          {
+            "mode": "everyWeek",
+            "weekDay": "friday",
+            "hour": 16,
+            "minute": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "2",
+      "name": "Fetch Trello Tasks",
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [400, 300],
+      "credentials": {
+        "trelloApi": {
+          "id": "your-credential-id",
+          "name": "Trello API"
+        }
+      },
+      "parameters": {
+        "resource": "card",
+        "operation": "getAll",
+        "boardId": "your-board-id",
+        "listId": "your-list-id"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Generate Status Report",
+      "type": "n8n-nodes-base.openai",
+      "typeVersion": 1,
+      "position": [600, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "your-openai-credential-id",
+          "name": "OpenAI API"
+        }
+      },
+      "parameters": {
+        "model": "gpt-4",
+        "prompt": "Summarize the following Trello tasks into a weekly status report:\n{{JSON.stringify($json)}}",
+        "temperature": 0.7
+      }
+    },
+    {
+      "id": "4",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [800, 300],
+      "credentials": {
+        "smtp": {
+          "id": "your-smtp-credential-id",
+          "name": "SMTP"
+        }
+      },
+      "parameters": {
+        "fromEmail": "your@email.com",
+        "toEmail": "stakeholders@email.com",
+        "subject": "Weekly Project Status Report",
+        "text": "{{$json['choices'][0]['text']}}"
+      }
+    }
+  ],
+  "connections": {
+    "Weekly Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch Trello Tasks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Trello Tasks": {
+      "main": [
+        [
+          {
+            "node": "Generate Status Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Status Report": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
+

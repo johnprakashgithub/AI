@@ -1,0 +1,225 @@
+{
+  "name": "AI adoption",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b187ec5a-9b35-45cd-a8ed-99b0b254f3ae",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "board",
+        "operation": "get",
+        "id": {
+          "__rl": true,
+          "value": "6898b730713d8cafb4894913",
+          "mode": "list",
+          "cachedResultName": "Mira",
+          "cachedResultUrl": "https://trello.com/b/MqFeekIu/mira"
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.trello",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "25c5ee5c-2863-424d-a7d9-b8a799aaff85",
+      "name": "Get a board",
+      "credentials": {
+        "trelloApi": {
+          "id": "C9kUqvtQYagaIiLt",
+          "name": "Trello account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Based on the following project details, generate a high level project plan with milestones, goals, and timeline:\\n\\n{{ $json.text }} and Summarize the Trello tasks in to weekly status report: {{JSON.stringify($json)}} "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "c9627196-90db-42ec-9bae-f0f71b091d43",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        288,
+        208
+      ],
+      "id": "0e3b971d-cdc2-404e-a9ff-a4cb35572196",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Xa6uBL35X7VweGrC",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "prakaso172@gmail.com",
+        "toEmail": "prakaso172@gmail.com",
+        "subject": "Weekly Project Status Report",
+        "emailFormat": "text",
+        "text": "={{$json['choices'][0]['text']}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        752,
+        16
+      ],
+      "id": "875d74b0-aedc-478b-85cc-a0204be1733d",
+      "name": "Send email",
+      "webhookId": "eca9c93b-7638-458a-abdd-15dc13a218c8",
+      "credentials": {
+        "smtp": {
+          "id": "v898ttKjoBaJm3ZZ",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        144,
+        -176
+      ],
+      "id": "f0cfaeb5-3ab1-4956-bd80-4011417fb7bb",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/Users/johnprakash/Public/Personal/Prakash\\ John/Career\\ and\\ Resume/Interview/AgenticAI/Capstone/project_files/*.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -176
+      ],
+      "id": "5a151b66-dee2-4a5d-9a1d-e146966988db",
+      "name": "Read/Write Files from Disk"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a board",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a board": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f00153bb-72d7-4579-bab0-29419bd7deef",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2011e59a1882273bf6599af056cd9409bf7892a10131f2f77fd3f569bc74a666"
+  },
+  "id": "vfahQb5DzE8J8tnn",
+  "tags": []
+}
