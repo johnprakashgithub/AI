@@ -16,7 +16,7 @@ logs/
 .vscode/
 
 # Steps
-examples/
+examples/Steps.md
 
 # OS
 .DS_Store

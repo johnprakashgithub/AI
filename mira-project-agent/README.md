@@ -14,14 +14,6 @@ An autonomous AI agent built with LangGraph to generate weekly project status re
 
 ---
 
-## Architecture
-
-```mermaid
-graph TD
-    A[TrelloFetcher] --> B[StatusSummarizer]
-    B --> C[EmailSender]
-    B --> D[MemoryStore]
-```
 ## Setup
 1. Clone the repo 
 ```git clone https://github.com/johnprakashgithub/AI --branch mira-project-agent```
@@ -42,3 +34,6 @@ EMAIL_TO=stakeholders@email.com
 ```pip install -r requirements.txt```
 4. Run the agent 
 ```python graph/mira_graph.py```
+
+5. FastAPI wrapper 
+uvicorn app:app --reload

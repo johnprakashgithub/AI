@@ -1,0 +1,29 @@
+[
+  {
+    "id": "card1",
+    "name": "Finalize landing page design",
+    "desc": "Complete UI/UX for homepage and mobile view",
+    "due": "2025-10-06T17:00:00.000Z",
+    "labels": ["Design", "High Priority"],
+    "members": ["John", "Prakash"],
+    "list": "In Progress"
+  },
+  {
+    "id": "card2",
+    "name": "Set up email campaign",
+    "desc": "Create Mailchimp flow for product launch",
+    "due": "2025-10-08T12:00:00.000Z",
+    "labels": ["Marketing"],
+    "members": ["Charlie"],
+    "list": "To Do"
+  },
+  {
+    "id": "card3",
+    "name": "Fix mobile responsiveness bug",
+    "desc": "Resolve layout issues on iPhone SE",
+    "due": null,
+    "labels": ["Bug", "Urgent"],
+    "members": ["Patrick"],
+    "list": "Done"
+  }
+]
